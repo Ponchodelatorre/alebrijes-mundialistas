@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Alebrijes Mundialistas PRO</title>
-    <script src="datos.js?v=2"></script>
+    <script src="datos.js"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-        .card { background: #1e293b; padding: 40px; border-radius: 20px; border: 2px solid #fb923c; width: 80%; max-width: 500px; }
-        button { padding: 15px 30px; margin-top: 20px; background: #fb923c; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; }
+        :root { --primary: #fb923c; --bg: #0f172a; --card: #1e293b; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .branding { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .branding img { height: 60px; }
+        .card { background: var(--card); padding: 30px; border-radius: 20px; border: 2px solid var(--primary); width: 90%; max-width: 600px; margin: 20px auto; }
+        .timer { font-size: 2em; color: var(--primary); margin: 10px 0; }
+        .score { font-size: 1.2em; margin-bottom: 20px; }
+        button { padding: 15px 30px; background: var(--primary); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; transition: 0.3s; }
+        button:hover { transform: scale(1.05); }
     </style>
 </head>
 <body>
+
+    <div class="branding">
+        <img src="logo_together.png" alt="Together for the Ocean">
+        <img src="logo_myproject.png" alt="My Project">
+    </div>
 
     <div id="game-container">
         <h1>Alebrijes Mundialistas</h1>
@@ -20,58 +31,62 @@
     </div>
 
     <script>
-<script>
-    let index = 0;
-    let preguntas = bancoPreguntas.base; // Aquí tu base de 50 preguntas
+        let index = 0, score = 0, timer, timeLeft = 15;
+        let preguntas = bancoPreguntas.base;
 
-    function iniciarJuego() {
-        document.getElementById('game-container').innerHTML = `
-            <div id="game-ui"></div>
-        `;
-        renderizarPregunta();
-    }
-
-    function renderizarPregunta() {
-        if (index >= preguntas.length) {
-            mostrarDashboard();
-            return;
+        function iniciarJuego() {
+            renderizarPregunta();
         }
 
-        let p = preguntas[index];
-        document.getElementById('game-ui').innerHTML = `
-            <div class="card">
-                <h3>${p.cat} (Nivel ${p.lvl})</h3>
-                <p style="font-size: 24px;">${p.q}</p>
-                <button id="btn-respuesta" onclick="revelarRespuesta('${p.a}')">Ver Respuesta</button>
-                <div id="respuesta-box" style="margin-top: 20px; font-weight: bold; color: #fb923c;"></div>
-            </div>
-            <p>Pregunta ${index + 1} de ${preguntas.length}</p>
-        `;
-    }
+        function startTimer() {
+            timeLeft = 15;
+            document.getElementById('timer').innerText = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft;
+                if (timeLeft <= 0) { clearInterval(timer); revelarRespuesta(); }
+            }, 1000);
+        }
 
-    function revelarRespuesta(respuesta) {
-        document.getElementById('respuesta-box').innerHTML = `Respuesta: ${respuesta} <br> 
-            <button onclick="siguientePregunta()" style="background:green;">Siguiente Pregunta</button>`;
-        document.getElementById('btn-respuesta').style.display = 'none'; // Ocultar botón ver respuesta
-    }
+        function renderizarPregunta() {
+            if (index >= preguntas.length) { mostrarDashboard(); return; }
+            let p = preguntas[index];
+            document.getElementById('game-container').innerHTML = `
+                <div class="card">
+                    <div class="score">Puntos: ${score}</div>
+                    <div class="timer" id="timer">15</div>
+                    <h3>${p.cat} (Nivel ${p.lvl})</h3>
+                    <p style="font-size: 24px;">${p.q}</p>
+                    <button id="btn-res" onclick="revelarRespuesta()">Ver Respuesta</button>
+                    <div id="res-box" style="margin-top: 20px; display:none;">
+                        <p style="font-weight:bold; color:var(--primary);">${p.a}</p>
+                        <button onclick="siguiente()">Siguiente Pregunta</button>
+                    </div>
+                </div>
+            `;
+            startTimer();
+        }
 
-    function siguientePregunta() {
-        index++;
-        renderizarPregunta();
-    }
+        function revelarRespuesta() {
+            clearInterval(timer);
+            document.getElementById('btn-res').style.display = 'none';
+            document.getElementById('res-box').style.display = 'block';
+            score += (timeLeft * 10); // Sistema de puntuación por rapidez
+        }
 
-    function mostrarDashboard() {
-        document.getElementById('game-container').innerHTML = `
-            <div class="card">
-                <h1>¡Torneo Finalizado!</h1>
-                <p>Has completado el banco de preguntas.</p>
-                <button onclick="window.print()">Descargar Certificado de Participación</button>
-                <br><br>
-                <button onclick="location.reload()">Jugar de nuevo</button>
-            </div>
-        `;
-    }
-</script>
+        function siguiente() { index++; renderizarPregunta(); }
+
+        function mostrarDashboard() {
+            document.getElementById('game-container').innerHTML = `
+                <div class="card">
+                    <h1>¡Torneo Finalizado!</h1>
+                    <p>Tu puntuación final: <b>${score}</b></p>
+                    <button onclick="window.print()">Descargar Certificado</button>
+                    <br><br>
+                    <button onclick="location.reload()">Jugar de nuevo</button>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
