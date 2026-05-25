@@ -20,44 +20,58 @@
     </div>
 
     <script>
-        let index = 0;
-        let preguntas = bancoPreguntas.base; // Aquí puedes cambiar a .legend o .ocean
+<script>
+    let index = 0;
+    let preguntas = bancoPreguntas.base; // Aquí tu base de 50 preguntas
 
-        function iniciarJuego() {
-            renderizarPregunta();
+    function iniciarJuego() {
+        document.getElementById('game-container').innerHTML = `
+            <div id="game-ui"></div>
+        `;
+        renderizarPregunta();
+    }
+
+    function renderizarPregunta() {
+        if (index >= preguntas.length) {
+            mostrarDashboard();
+            return;
         }
 
-        function renderizarPregunta() {
-            if (index >= preguntas.length) {
-                mostrarDashboard();
-                return;
-            }
-            let p = preguntas[index];
-            document.getElementById('ui-area').innerHTML = `
-                <div class="card">
-                    <h3>${p.cat} (Nivel ${p.lvl})</h3>
-                    <p style="font-size: 22px;">${p.q}</p>
-                    <button onclick="siguiente()">Ver Respuesta: ${p.a}</button>
-                </div>
-                <p>Pregunta ${index + 1} de ${preguntas.length}</p>
-            `;
-        }
+        let p = preguntas[index];
+        document.getElementById('game-ui').innerHTML = `
+            <div class="card">
+                <h3>${p.cat} (Nivel ${p.lvl})</h3>
+                <p style="font-size: 24px;">${p.q}</p>
+                <button id="btn-respuesta" onclick="revelarRespuesta('${p.a}')">Ver Respuesta</button>
+                <div id="respuesta-box" style="margin-top: 20px; font-weight: bold; color: #fb923c;"></div>
+            </div>
+            <p>Pregunta ${index + 1} de ${preguntas.length}</p>
+        `;
+    }
 
-        function siguiente() {
-            index++;
-            renderizarPregunta();
-        }
+    function revelarRespuesta(respuesta) {
+        document.getElementById('respuesta-box').innerHTML = `Respuesta: ${respuesta} <br> 
+            <button onclick="siguientePregunta()" style="background:green;">Siguiente Pregunta</button>`;
+        document.getElementById('btn-respuesta').style.display = 'none'; // Ocultar botón ver respuesta
+    }
 
-        function mostrarDashboard() {
-            document.getElementById('game-container').innerHTML = `
-                <div class="card">
-                    <h1>¡Torneo Finalizado!</h1>
-                    <p>Has completado el banco de preguntas.</p>
-                    <button onclick="window.print()">Descargar Certificado</button>
-                    <br><button onclick="location.reload()">Jugar de nuevo</button>
-                </div>
-            `;
-        }
+    function siguientePregunta() {
+        index++;
+        renderizarPregunta();
+    }
+
+    function mostrarDashboard() {
+        document.getElementById('game-container').innerHTML = `
+            <div class="card">
+                <h1>¡Torneo Finalizado!</h1>
+                <p>Has completado el banco de preguntas.</p>
+                <button onclick="window.print()">Descargar Certificado de Participación</button>
+                <br><br>
+                <button onclick="location.reload()">Jugar de nuevo</button>
+            </div>
+        `;
+    }
+</script>
     </script>
 </body>
 </html>
