@@ -2,63 +2,32 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alebrijes Mundialistas Pro</title>
+    <title>Alebrijes Mundialistas</title>
     <script src="datos.js"></script>
     <style>
-        /* Estilos optimizados - No Scroll */
-        body { margin:0; padding:0; height:100vh; background:#0f172a; color:white; font-family:sans-serif; overflow:hidden; display:flex; flex-direction:column; }
-        .game-screen { display:none; flex-direction:column; height:100vh; align-items:center; }
-        #dashboard { display:none; flex-direction:column; align-items:center; justify-content:center; height:100vh; }
-        .btn { padding:10px 20px; border-radius:8px; border:none; cursor:pointer; font-weight:bold; }
-        .logo-top { height: 40px; }
+        body { background: #0f172a; color: white; text-align: center; font-family: sans-serif; padding-top: 50px; }
+        .btn-test { padding: 20px; font-size: 20px; background: #fb923c; border: none; cursor: pointer; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <div id="game-screen">
-        <div class="top-nav">
-            <img src="logo_24FO_bco_h.png" class="logo-top">
-            <button onclick="toggleVoice()">Voz: ON</button>
-        </div>
-        <div id="mainScoreboard"></div>
-        <div id="card-area"></div>
-        <div id="timerDisplay">15s</div>
-        <button id="startBtn" onclick="startTimer()">Iniciar</button>
-    </div>
-
-    <div id="dashboard">
-        <h1>Resultados Finales</h1>
-        <div id="ranking"></div>
-        <button onclick="window.print()">Descargar Certificado</button>
+    <div id="pantalla">
+        <h1>¡Bienvenido a Alebrijes!</h1>
+        <p>Motor cargado correctamente.</p>
+        <button class="btn-test" onclick="iniciarJuego()">Iniciar Juego</button>
     </div>
 
     <script>
-        // Limpiador de texto para voz (Elimina emojis automáticamente)
-        function speak(text) {
-            if (!isMuted && 'speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                let clean = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, "");
-                let u = new SpeechSynthesisUtterance(clean);
-                u.lang = 'es-MX';
-                window.speechSynthesis.speak(u);
-            }
-        }
-        
-        function scoreAnswer(isCorrect) {
-            // ... lógica de score ...
-            // Verificación dinámica de fin de juego
-            let totalQuestionsTarget = activePlayers.length * 50;
-            if (currentTurnIndex >= totalQuestionsTarget) {
-                endGame();
+        function iniciarJuego() {
+            // Verificamos si los datos existen
+            if (typeof bancoPreguntas !== 'undefined') {
+                document.getElementById('pantalla').innerHTML = `
+                    <h1>¡Juego Iniciado!</h1>
+                    <p>Total de preguntas base: ${bancoPreguntas.base.length}</p>
+                    <p>La primera pregunta es: ${bancoPreguntas.base[0].q}</p>
+                `;
             } else {
-                loadNextTurn();
+                alert("Error: datos.js no cargado");
             }
-        }
-
-        function endGame() {
-            document.getElementById('game-screen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'flex';
-            // Lógica para mostrar ranking
         }
     </script>
 </body>
