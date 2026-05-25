@@ -2,46 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Test de Alebrijes</title>
+    <title>Alebrijes Mundialistas</title>
     <script src="datos.js"></script>
     <style>
-        body { 
-            background: #0f172a; 
-            color: white; 
-            font-family: sans-serif; 
-            margin: 0; 
-            padding: 20px;
-        }
-        .debug-box { 
-            border: 2px solid #fb923c; 
-            padding: 20px; 
-            border-radius: 10px; 
-        }
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
+        button { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fb923c; border: none; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="debug-box">
-        <h1>Estado del Sistema:</h1>
-        <div id="test-output">Cargando...</div>
-    </div>
+    <h1>Alebrijes Mundialistas</h1>
+    <p>Motor cargado. Haz clic para iniciar:</p>
+    
+    <button onclick="startTimer()">Iniciar Juego</button>
+
+    <div id="game-display" style="margin-top: 30px;"></div>
 
     <script>
-        // Esta función se ejecuta sola al abrir la página
-        window.onload = function() {
-            let output = document.getElementById('test-output');
-            
-            // Verificamos si los datos de datos.js están presentes
+        // ESTA ES LA FUNCIÓN QUE FALTABA
+        function startTimer() {
+            console.log("Iniciando timer...");
+            // Verificamos si los datos cargaron
             if (typeof bancoPreguntas !== 'undefined') {
-                output.innerHTML = `
-                    <p style="color: green;">✅ Base de datos detectada.</p>
-                    <p>Total de preguntas base: ${bancoPreguntas.base.length}</p>
-                    <p>Primera pregunta: <b>${bancoPreguntas.base[0].q}</b></p>
-                `;
+                document.getElementById('game-display').innerHTML = 
+                    "<h2>¡Juego Iniciado!</h2>" +
+                    "<p>Primera pregunta: " + bancoPreguntas.base[0].q + "</p>";
             } else {
-                output.innerHTML = `<p style="color: red;">❌ Error: datos.js no está cargando.</p>`;
+                alert("Error: datos.js no cargado");
             }
-        };
+        }
     </script>
 </body>
 </html>
