@@ -2,41 +2,44 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Alebrijes Mundialistas</title>
+    <title>Test de Alebrijes</title>
     <script src="datos.js"></script>
     <style>
-        /* CSS que obliga a mostrar todo */
-        body { background: #0f172a; color: white; font-family: sans-serif; margin: 0; padding: 20px; }
-        .game-box { border: 2px solid orange; padding: 20px; margin-top: 20px; border-radius: 10px; }
+        body { 
+            background: #0f172a; 
+            color: white; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 20px;
+        }
+        .debug-box { 
+            border: 2px solid #fb923c; 
+            padding: 20px; 
+            border-radius: 10px; 
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Alebrijes Mundialistas</h1>
-        <p>Estado del Motor: <span id="status">Cargando...</span></p>
-    </header>
-
-    <div class="game-box" id="game-container">
-        <h2>Panel de Control</h2>
-        <div id="preguntas-test"></div>
+    <div class="debug-box">
+        <h1>Estado del Sistema:</h1>
+        <div id="test-output">Cargando...</div>
     </div>
 
     <script>
-        // Carga automática al abrir
+        // Esta función se ejecuta sola al abrir la página
         window.onload = function() {
-            let status = document.getElementById('status');
-            let container = document.getElementById('preguntas-test');
-
+            let output = document.getElementById('test-output');
+            
+            // Verificamos si los datos de datos.js están presentes
             if (typeof bancoPreguntas !== 'undefined') {
-                status.innerText = "¡Motor Online!";
-                container.innerHTML = `
-                    <p>Base de datos cargada. Total preguntas base: ${bancoPreguntas.base.length}</p>
+                output.innerHTML = `
+                    <p style="color: green;">✅ Base de datos detectada.</p>
+                    <p>Total de preguntas base: ${bancoPreguntas.base.length}</p>
                     <p>Primera pregunta: <b>${bancoPreguntas.base[0].q}</b></p>
-                    <button onclick="alert('La respuesta es: ' + bancoPreguntas.base[0].a)">Ver Respuesta</button>
                 `;
             } else {
-                status.innerText = "Error: datos.js no encontrado.";
+                output.innerHTML = `<p style="color: red;">❌ Error: datos.js no está cargando.</p>`;
             }
         };
     </script>
