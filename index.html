@@ -2,34 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Alebrijes Mundialistas</title>
+    <title>Alebrijes Mundialistas PRO</title>
     <script src="datos.js"></script>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
-        button { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #fb923c; border: none; border-radius: 10px; }
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .card { background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #fb923c; margin: 20px auto; max-width: 500px; }
+        button { padding: 15px 30px; background: #fb923c; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <h1>Alebrijes Mundialistas</h1>
-    <p>Motor cargado. Haz clic para iniciar:</p>
-    
-    <button onclick="startTimer()">Iniciar Juego</button>
-
-    <div id="game-display" style="margin-top: 30px;"></div>
+    <div id="game-ui">
+        <button id="btn-start" onclick="iniciarJuegoReal()">¡Comenzar Torneo!</button>
+    </div>
 
     <script>
-        // ESTA ES LA FUNCIÓN QUE FALTABA
-        function startTimer() {
-            console.log("Iniciando timer...");
-            // Verificamos si los datos cargaron
-            if (typeof bancoPreguntas !== 'undefined') {
-                document.getElementById('game-display').innerHTML = 
-                    "<h2>¡Juego Iniciado!</h2>" +
-                    "<p>Primera pregunta: " + bancoPreguntas.base[0].q + "</p>";
-            } else {
-                alert("Error: datos.js no cargado");
-            }
+        function iniciarJuegoReal() {
+            // Ocultamos el botón de inicio
+            document.getElementById('game-ui').innerHTML = "";
+            
+            // Renderizamos la primera pregunta
+            let preg = bancoPreguntas.base[0];
+            
+            document.getElementById('game-ui').innerHTML = `
+                <div class="card">
+                    <h3>${preg.cat}</h3>
+                    <p style="font-size: 24px;">${preg.q}</p>
+                    <button onclick="alert('Respuesta: ${preg.a}')">Ver Respuesta</button>
+                </div>
+            `;
+            
+            // Aquí activaríamos el temporizador después
+            console.log("Juego iniciado con éxito.");
         }
     </script>
 </body>
