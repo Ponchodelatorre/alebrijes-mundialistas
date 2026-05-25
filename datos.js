@@ -52,8 +52,6 @@ const bancoPreguntas = {
         { lvl: 2, cat: "MUNDIAL", q: "¿Qué equipo ganó el mundial de 1970?", a: "Brasil" },
         { lvl: 2, cat: "PLANETA", q: "¿Qué es la biosfera?", a: "Capa donde hay vida" }
     ],
-
-    // Espacio para las siguientes categorías
     legend: [],
     ocean: []
 };
